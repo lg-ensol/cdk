@@ -84,10 +84,7 @@ export class BackendConstruct extends Construct {
       layers: [pythonLayer],
       insightsVersion: lambda.LambdaInsightsVersion.VERSION_1_0_119_0, // Lambda Insights 활성화
       memorySize: 512,
-      environment: {
-        MY_ENV_VARIABLE: 'my-value'
-      }
-    });
+      });
 
     invokeLambda.addToRolePolicy(insightsPolicy);
 
