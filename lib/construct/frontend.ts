@@ -38,7 +38,7 @@ export class FrontendConstruct extends Construct {
     const amplifyApp = new amplify.CfnApp(this, "AmplifyL3App", {
       name: "stonei-web",
       accessToken: cdk.SecretValue.secretsManager("GithubToken").unsafeUnwrap(),
-      repository: "https://github.com/stoneidev/serverless-admin",
+      repository: "https://github.com/lg-ensol/cdk",
       platform: "WEB_COMPUTE",
       iamServiceRole: amplifyRole.roleArn,
       environmentVariables: [
@@ -93,6 +93,6 @@ export class FrontendConstruct extends Construct {
     });
 
     this.appId = amplifyApp.attrAppId;
-    this.repoUrl = "https://github.com/stoneidev/serverless-admin";
+    this.repoUrl = "https://github.com/lg-ensol/cdk";
   }
 }
