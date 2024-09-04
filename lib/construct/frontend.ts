@@ -37,7 +37,7 @@ export class FrontendConstruct extends Construct {
     // Amplify 앱 생성
     const amplifyApp = new amplify.CfnApp(this, "AmplifyL3App", {
       name: "stonei-web",
-      accessToken: cdk.SecretValue.secretsManager("GithubToken").unsafeUnwrap(),
+      accessToken: cdk.SecretValue.secretsManager("sm-eu-aics-token").unsafeUnwrap(),
       repository: "https://github.com/lg-ensol/serverless-admin",
       platform: "WEB_COMPUTE",
       iamServiceRole: amplifyRole.roleArn,
