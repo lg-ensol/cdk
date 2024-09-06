@@ -30,7 +30,7 @@ export class BackendConstruct extends Construct {
       resources: ["*"],
     });
 
-    // Lambda 레이어 생성
+        // Lambda 레이어 생성
     const lambdaLayer = new lambda.LayerVersion(this, "AWSSDK-Layer", {
       code: lambda.Code.fromAsset(
         path.join(__dirname, "..", "..", "src", "layer", "layer.zip")
@@ -75,6 +75,14 @@ export class BackendConstruct extends Construct {
 
     publicLambda.addToRolePolicy(insightsPolicy);
 
+    const bedrockPolicy = new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        "bedrock:InvokeAgent",
+        ],
+      resources: ["*"],
+    });
+
     const invokeLambda = new lambda.Function(this, "InvokeHandler", {
       runtime: lambda.Runtime.PYTHON_3_11,
       code: lambda.Code.fromAsset(
@@ -87,6 +95,7 @@ export class BackendConstruct extends Construct {
       });
 
     invokeLambda.addToRolePolicy(insightsPolicy);
+    invokeLambda.addToRolePolicy(bedrockPolicy);
 
     const dynamoDbPolicy = new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
