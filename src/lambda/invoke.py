@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import json
 import logging
 import boto3
@@ -34,6 +36,7 @@ def get_highest_agent_version_alias_id(response):
     return highest_version_alias_id
 
 def invoke_agent(user_input, session_id):
+    log(f"User input response... {user_input}")
     streaming_response = agent_runtime_client.invoke_agent(
         agentId=AGENT_ID,
         agentAliasId=AGENT_ALIAS_ID,
@@ -93,11 +96,15 @@ def source_link(input_source_list):
         obj = string.partition("/")[2]
         file = s3_resource.Object(bucket, obj)
         body = file.get()["Body"].read()
-        res = json.loads(body)
-        source_link_url = res["Url"]
-        source_title = res["Topic"]
-        source_dict = (source_title, source_link_url)
-        source_dict_list.append(source_dict)
+        try:
+            decoded_body = body.decode('utf-8')
+            res = json.loads(decoded_body)
+            source_link_url = res["Url"]
+            source_title = res["Topic"]
+            source_dict = (source_title, source_link_url)
+            source_dict_list.append(source_dict)
+        except UnicodeDecodeError: 
+            pass
     unique_sources = list(OrderedDict.fromkeys(source_dict_list))
     refs_str = ""
     for i, (title, link) in enumerate(unique_sources, start=1):
@@ -131,4 +138,4 @@ def lambda_handler(event, context):
 
     output = {"answer": response, "source": reference_str}
 
-    return output
+    return {'statusCode': 200,'body': json.dumps(output)}
