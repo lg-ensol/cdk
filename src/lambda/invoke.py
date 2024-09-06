@@ -117,7 +117,7 @@ def lambda_handler(event, context):
     log(json.dumps(event))
 
     # Directly access the body as it is already a dictionary
-    body = event["body"]
+    body = json.loads(event["body"])
 
     streaming_response = invoke_agent(body["query"], body["session_id"])
     response, source_file_list = get_agent_response(streaming_response)
