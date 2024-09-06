@@ -79,6 +79,13 @@ export class BackendConstruct extends Construct {
       effect: iam.Effect.ALLOW,
       actions: [
         "bedrock:InvokeAgent",
+        "bedrock:ListKnowledgeBases",
+        "bedrock:GetKnowledgeBase",
+        "bedrock:QueryKnowledgeBase",
+        "s3:ListBucket",
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:GetObjectAttributes"
         ],
       resources: ["*"],
     });
